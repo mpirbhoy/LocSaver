@@ -183,9 +183,10 @@ public class MainActivity extends AppCompatActivity
     public void goToMapActivity(View view) {
 
         Intent intent = new Intent(this, MapsActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.edit_message);
-//        String message = editText.getText().toString();
-//        intent.putExtra("sampleMsg", message);
+        intent.putExtra("latitude", mLatitudeText.getText());
+        intent.putExtra("longitude", mLongitudeText.getText());
+        System.out.println(mLatitudeText.getText());
+        System.out.println(mLongitudeText.getText());
         startActivity(intent);
 
 

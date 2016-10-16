@@ -1,5 +1,6 @@
 package com.footprint.locsaver.locsaver;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -13,6 +14,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private float latitude = 0;
+    private float longitude = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +25,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        Intent intent = getIntent();
+
+        latitude = Float.parseFloat(intent.getStringExtra("latitude"));
+        longitude = Float.parseFloat(intent.getStringExtra("longitude"));
     }
 
 
@@ -40,7 +48,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng currentPos = new LatLng(latitude, longitude);
+        mMap.addMarker(new MarkerOptions().position(currentPos).title("Current Marker"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentPos));
     }
 }
