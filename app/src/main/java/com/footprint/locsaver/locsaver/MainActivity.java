@@ -14,7 +14,17 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.location.LocationListener;
@@ -23,10 +33,14 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity
@@ -40,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private TextView mLongitudeText;
     private LocationRequest mLocationRequest;
     private TextView mLastUpdateTime;
+    private RequestQueue requestQueue;
     private static final int PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 11;
 
     @Override
@@ -70,6 +85,10 @@ public class MainActivity extends AppCompatActivity
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
                 .build();
+
+        //Initializing requestQueue for sending http requests
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
     }
 
     @Override
@@ -189,6 +208,45 @@ public class MainActivity extends AppCompatActivity
         System.out.println(mLongitudeText.getText());
         startActivity(intent);
 
+    }
+
+    //Add Footprint
+    public void addFootprint(View view) throws UnsupportedEncodingException {
+        final Float lat = Float.parseFloat(mLatitudeText.getText().toString());
+        final Float lon = Float.parseFloat(mLongitudeText.getText().toString());
+        final String URL = "https://foot-print.herokuapp.com/footprintAnon";
+
+        if (lat != 0 && lon != 0) {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(MainActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                        }
+                    }){
+                @Override
+                protected Map<String,String> getParams(){
+                    Map<String,String> params = new HashMap<String, String>();
+                    params.put("lat", lat.toString());
+                    params.put("lon" , lon.toString());
+                    return params;
+                }
+
+            };
+
+            requestQueue.add(stringRequest);
+
+        } else {
+            Toast.makeText(MainActivity.this, "Can't access current location",
+                    Toast.LENGTH_LONG).show();
+        }
+
 
     }
 
@@ -208,11 +266,30 @@ public class MainActivity extends AppCompatActivity
             System.out.println("Security Exception 3!");
         }
 
-//        System.out.println("Google client is connected : " + mGoogleClient.isConnected());
-//
-//        System.out.println("Last location is null : " + (mLastLocation == null));
 
 
+    }
+
+    //Delete all footprints
+    public void delAllFootprints(View view) {
+        System.out.println("hey");
+        String URL = "https://foot-print.herokuapp.com/allFootprints";
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this,response,Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this,error.toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+
+        //Add it to the requestqueue
+        requestQueue.add(stringRequest);
     }
 
     //Called when don't have permissions
