@@ -105,7 +105,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             for (int i = 0, size = responseArray.length(); i < size; i++) {
                                 JSONObject footprint = responseArray.getJSONObject(i);
                                 LatLng currentPos = new LatLng(BigDecimal.valueOf(footprint.getDouble("lat")).floatValue(), BigDecimal.valueOf(footprint.getDouble("lon")).floatValue());
-                                map.addMarker(new MarkerOptions().position(currentPos).title("Marker " + i));
+                                String title = "Marker " + i;
+                                if (footprint.has("content")) {
+                                    title = footprint.getString("content");
+                                }
+                                map.addMarker(new MarkerOptions().position(currentPos).title(title));
                                 map.moveCamera(CameraUpdateFactory.newLatLng(currentPos));
                                 latitude = BigDecimal.valueOf(footprint.getDouble("lat")).floatValue();
                                 longitude = BigDecimal.valueOf(footprint.getDouble("lon")).floatValue();

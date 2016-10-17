@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">LocSaver</string>
     <string name="title_activity_maps">Map</string>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main">Loc-Saver</string>
     <string name="go_to_map_act">View Saved Locations in Maps</string>
     <string name="get_location_manual">Get location manually! </string>
     <string name="defaultLat">0 </string>
@@ -9,5 +9,6 @@
     <string name="defaultLastUpdate">Not Updated Yet! </string>
     <string name="addFootprint">Add Footprint </string>
     <string name="delAllFootprints">Delete all footprints!</string>
+    <string name="message_hint">Enter your message here!</string>
 
 </resources>

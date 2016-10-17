@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity
     private TextView mLongitudeText;
     private LocationRequest mLocationRequest;
     private TextView mLastUpdateTime;
+    private EditText messageBox;
     private RequestQueue requestQueue;
     private static final int PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 11;
 
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity
         mLatitudeText = (TextView) findViewById(R.id.latView);
         mLongitudeText = (TextView) findViewById(R.id.longView);
         mLastUpdateTime = (TextView) findViewById(R.id.lastUpdateTimeView);
+        messageBox = (EditText) findViewById(R.id.msgBox);
 
 
         //Initializing Google Client which provides location info
@@ -225,6 +227,7 @@ public class MainActivity extends AppCompatActivity
         final Float lat = Float.parseFloat(mLatitudeText.getText().toString());
         final Float lon = Float.parseFloat(mLongitudeText.getText().toString());
         final String URL = "https://foot-print.herokuapp.com/footprintAnon";
+        final String message = messageBox.getText().toString();
 
         if (lat != 0 && lon != 0) {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL,
@@ -245,6 +248,7 @@ public class MainActivity extends AppCompatActivity
                     Map<String,String> params = new HashMap<String, String>();
                     params.put("lat", lat.toString());
                     params.put("lon" , lon.toString());
+                    params.put("content", message);
                     return params;
                 }
 

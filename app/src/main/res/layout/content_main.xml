@@ -11,7 +11,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.footprint.locsaver.locsaver.MainActivity"
-    tools:showIn="@layout/activity_main">
+
+tools:showIn="@layout/activity_main">
 
     <TextView
         android:id="@+id/latView"
@@ -70,7 +71,19 @@
         android:text="@string/delAllFootprints"
         android:onClick="delAllFootprints"
         android:id="@+id/delAllFootprintsBtn"
-        android:layout_below="@+id/addFootprintBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_alignLeft="@+id/msgBox"
+        android:layout_alignStart="@+id/msgBox"
+        android:layout_marginBottom="13dp" />
+
+    <EditText
+        android:id="@+id/msgBox"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:maxLines="4"
+        android:hint="@string/message_hint"
+        android:layout_weight="2"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
